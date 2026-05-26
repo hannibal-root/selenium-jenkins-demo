@@ -33,6 +33,7 @@ pipeline {
                     reportName: 'API Test Report'
                 ])
             }
+        }
     }
 
     post {
@@ -42,11 +43,11 @@ pipeline {
         }
 
         success {
-            echo 'Selenium teszt sikeres!'
+            echo 'Teszt sikeres!'
         }
 
         failure {
-            echo 'Selenium teszt sikertelen!'
+            echo 'Teszt sikertelen!'
         }
     }
 }
