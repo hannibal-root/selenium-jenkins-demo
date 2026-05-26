@@ -16,22 +16,28 @@ pipeline {
             }
         }
 
-        stage('Build & Test') {
+        stage('Clean') {
             steps {
-                sh 'mvn clean test site'
+                sh 'mvn clean'
             }
         }
 
-        stage('Publish Report') {
+        stage('Compile') {
             steps {
-                publishHTML(target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'target/site',
-                    reportFiles: 'index.html',
-                    reportName: 'API Test Report'
-                ])
+                sh 'mvn compile test-compile'
+            }
+        }
+
+        stage('Regression Tests') {
+            steps {
+                // minden teszt lefut (API regression suite)
+                sh 'mvn test'
+            }
+        }
+
+        stage('Generate Reports') {
+            steps {
+                sh 'mvn surefire-report:report'
             }
         }
     }
@@ -39,17 +45,20 @@ pipeline {
     post {
 
         always {
+            // JUnit report Jenkins UI-hoz
             junit 'target/surefire-reports/*.xml'
 
+            // “snapshot” reportok
+            archiveArtifacts artifacts: 'target/**/surefire-report.html', allowEmptyArchive: true
             archiveArtifacts artifacts: 'target/api-report.log', allowEmptyArchive: true
         }
 
         success {
-            echo 'Teszt sikeres!'
+            echo 'Regression suite SUCCESS ✔'
         }
 
         failure {
-            echo 'Teszt sikertelen!'
+            echo 'Regression suite FAILED - check reports'
         }
     }
 }
