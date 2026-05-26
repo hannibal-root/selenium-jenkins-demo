@@ -48,9 +48,19 @@ pipeline {
             // JUnit report Jenkins UI-hoz
             junit 'target/surefire-reports/*.xml'
 
+            publishHTML(target: [
+                            allowMissing: false,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'target/site',
+                            reportFiles: 'surefire-report.html',
+                            reportName: 'API Regression HTML Report'
+                        ])
+
             // “snapshot” reportok
             archiveArtifacts artifacts: 'target/**/surefire-report.html', allowEmptyArchive: true
             archiveArtifacts artifacts: 'target/api-report.log', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'target/allure-results/**', allowEmptyArchive: true
         }
 
         success {
