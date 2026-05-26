@@ -11,7 +11,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/TE_USER/selenium-jenkins-demo.git'
+                git 'https://github.com/hannibal-root/selenium-jenkins-demo.git'
             }
         }
 
