@@ -40,6 +40,8 @@ pipeline {
 
         always {
             junit 'target/surefire-reports/*.xml'
+
+            archiveArtifacts artifacts: 'target/api-report.log', allowEmptyArchive: true
         }
 
         success {
