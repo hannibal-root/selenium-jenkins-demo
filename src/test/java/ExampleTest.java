@@ -20,6 +20,7 @@ public class ExampleTest {
         options.addArguments("--headless=new");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
 
         driver = new ChromeDriver(options);
     }
