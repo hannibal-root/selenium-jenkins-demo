@@ -31,7 +31,7 @@ pipeline {
         stage('Regression Tests') {
             steps {
                 // minden teszt lefut (API regression suite)
-                sh 'mvn test'
+                sh 'mvn test surefire-report:report'
             }
         }
 
