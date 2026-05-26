@@ -38,6 +38,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- REST Assured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -45,13 +46,7 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.10.2</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- ALLURE JUNIT5 ADAPTER -->
+        <!-- ALLURE -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
@@ -59,7 +54,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- ALLURE REST ASSURED INTEGRATION -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
@@ -72,24 +66,24 @@
     <build>
         <plugins>
 
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>2.12.0</version>
-            </plugin>
-
-            <!-- Surefire plugin -->
+            <!-- TEST RUNNER -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
             </plugin>
 
-            <!-- HTML report plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>4.0.0-M13</version>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+
+            <!-- ALLURE -->
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.12.0</version>
             </plugin>
 
         </plugins>

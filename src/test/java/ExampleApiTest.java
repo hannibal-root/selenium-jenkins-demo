@@ -4,6 +4,10 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -22,10 +26,14 @@ public class ExampleApiTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Validates that post with id=1 is returned correctly")
 
-    public void testGetPost() {
+    public void testGetPost() throws FileNotFoundException {
+
+        PrintStream logStream = new PrintStream(
+                new FileOutputStream("target/api-report.log")
+        );
 
         given()
-                .filter(new AllureRestAssured())   // 🔥 request/response capture
+                .filter(new AllureRestAssured())
                 .log().all()
                 .when()
                 .get("/posts/1")
