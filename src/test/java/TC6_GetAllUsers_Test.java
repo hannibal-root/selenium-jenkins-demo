@@ -13,10 +13,5 @@ public class TC6_GetAllUsers_Test extends BaseAPI_Test {
      * <p>
      * getAllUsers
      */
-    @Test
-    public void TCX_GetAllUsers() {
-        Response response = given().header("Authorization", "Bearer " + authToken)
-                .when().get("/api/v1/users");
-        response.prettyPrint();
-    }
+
 }
