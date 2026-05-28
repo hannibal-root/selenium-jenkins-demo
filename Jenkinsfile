@@ -11,7 +11,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main',
+                git branch: 'anett',
                     url: 'https://github.com/hannibal-root/selenium-jenkins-demo.git'
             }
         }
