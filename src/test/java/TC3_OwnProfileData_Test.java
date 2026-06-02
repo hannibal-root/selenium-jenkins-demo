@@ -1,24 +1,53 @@
-import io.restassured.response.Response;
+import io.qameta.allure.*;
+        import io.qameta.allure.restassured.AllureRestAssured;
+import io.restassured.RestAssured;
+import io.restassured.config.LogConfig;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
+import static io.restassured.RestAssured.given;
+import static io.restassured.config.RestAssuredConfig.config;
+import static org.hamcrest.Matchers.*;
+
+@Epic("API Regression Suite")
+@Feature("Posts API")
 public class TC3_OwnProfileData_Test extends BaseAPI_Test {
 
-    /**
-     * Ez a teszt kiírja a profil adatait JSON formátumban, amivel a regisztráció létrejött
-     * <p>
-     * GET /api/v1/user/find
-     * <p>
-     * getUserByUsername
-     */
-    @Test
-    public void TC3_OwnProfileData() {
-        /* A globalTestData.properties fájlból kiolvassuk az e-mail címet.*/
-        // String userName = globalTestData.getProperty(Consts.REG_EMAILADDRESS);
+    @BeforeAll
+    public static void setup() throws Exception {
 
-        /* A regisztrációs adatoknál megadott e-mail címet felhasználva megkeressük a profilt és kiíratjuk vele a profil adatokat.*/
+        PrintStream logStream =
+                new PrintStream(new FileOutputStream("target/api-report.log"));
 
+        RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
+
+        RestAssured.config = config().logConfig(
+                LogConfig.logConfig().defaultStream(logStream)
+        );
     }
+
+    @Test
+    @Story("Get single post")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Validates that post with id=1 is returned correctly")
+    public void TC3_OwnProfileData() {
+
+        given()
+                .filter(new AllureRestAssured())
+                .log().all()
+
+                .when()
+                .get("/posts/1")
+
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("id", equalTo(1))
+                .body("userId", notNullValue())
+                .body("title", not(emptyString()));
+    }
+
 }

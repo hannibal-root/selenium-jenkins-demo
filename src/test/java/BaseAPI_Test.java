@@ -27,11 +27,19 @@ public class BaseAPI_Test {
         Response response = given().contentType(JSON)
                 .queryParam("username", "admin@demo.io")
                 .queryParam("password", "Demo123!")
+                .given().body("{\n" +
+                "  \"accountName\": \"API-Checking\",\n" +
+                "  \"accountTypeCode\": \"SCK\",\n" +
+                "  \"openingDeposit\": 999,\n" +
+                "  \"ownerTypeCode\": \"IND\"\n" +
+                "}")
                 .when()
                 .post("/api/v1/auth");
 
         response.prettyPrint();
         authToken = response.jsonPath().get("authToken").toString();
+
+
 
         /*
          * GET - Read
