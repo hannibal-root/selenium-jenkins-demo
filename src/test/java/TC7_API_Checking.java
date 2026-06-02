@@ -22,5 +22,19 @@ public class TC7_API_Checking extends BaseAPI_Test{
 
                 int userId = response.jsonPath().getInt("id");
                 System.out.println("user Id: " + userId);
+
+       /* Response response2 = RestAssured
+                .given()
+                .header("Authorization", "Bearer " + authToken)
+                .pathParam("id", userId)
+                .when()
+                .post("/api/v1/user/{id}/account");
+
+                response2.prettyPrint();
+                assertEquals(201, response2.getStatusCode());
+
+                System.out.println("Uj Account: " + userId); */
+
+
     }
 }
