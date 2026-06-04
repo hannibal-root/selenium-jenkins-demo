@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static org.hamcrest.Matchers.equalTo;
 
 public class TC8_RenameExistingCheckingAccount_Test extends BaseAPI_Test {
 
@@ -56,11 +57,25 @@ public class TC8_RenameExistingCheckingAccount_Test extends BaseAPI_Test {
 
         response3.prettyPrint();
 
-        //Eltároljuk a `CHECK1` account azonosítóját -> ELAKADTAM!
-        //String check1AccountId = response3.jsonPath().get("id").
+        //Eltároljuk a `CHECK1` account azonosítóját
+        // ...getInt("[0].id");
+        int accountId = response3.jsonPath().getInt("find { it.name == '" + "CHECK1_MOD" + "' }.id");
+        System.out.println(accountId);
 
+        //4. Nevezzük át a `CHECK1` accountot `CHECK1_MOD` névre PUT /api/v1/account/{id}
+        String modName = "CHECK1_MOD";
 
+        Response response4 = given()
+                .contentType(JSON)
+                .header(AUTH_HEADER, "Bearer " + authToken)
+                .queryParam("newName", modName)
 
+                .when()
+                .put("/api/v1/account/" + accountId);
+
+        response4.then()
+                .statusCode(200)
+                .body("name", equalTo(modName))
+                .log().all();
     }
-
 }

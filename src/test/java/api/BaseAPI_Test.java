@@ -12,7 +12,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 
 public class BaseAPI_Test {
-    public static final String AUTH_HEADER = "Authorization";
+    public static String AUTH_HEADER = "Authorization";
 
     protected static Logger logger = LogManager.getLogger(BaseAPI_Test.class);
 

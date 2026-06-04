@@ -11,6 +11,21 @@ public class CreateSavingsPage extends BasePage{
         logger = LogManager.getLogger(CreateSavingsPage.class);
     }
 
+    @FindBy(id = "Savings")
+    WebElement savingRadio;
+
+    @FindBy(id = "Individual")
+    WebElement individualRadio;
+
+    @FindBy(id = "name")
+    WebElement nameInput;
+
+    @FindBy(id = "openingBalance")
+    WebElement  openingBalanceInput;
+
+    @FindBy(id = "newSavingsSubmit")
+    WebElement  submitButton;
+
     @FindBy(xpath = "//h1[@id='page-title']")
     WebElement pageTitle;
 
@@ -24,4 +39,14 @@ public class CreateSavingsPage extends BasePage{
         return isLoaded;
     }
 
+    public ViewSavingsPage createAccount(String accountName) {
+        savingRadio.click();
+        individualRadio.click();
+        nameInput.sendKeys(accountName);
+        openingBalanceInput.sendKeys("20000");
+
+        submitButton.click();
+
+        return new ViewSavingsPage(driver);
+    }
 }

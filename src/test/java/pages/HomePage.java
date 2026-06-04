@@ -5,6 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class HomePage extends BasePage{
     static {
         logger = LogManager.getLogger(HomePage.class);
@@ -28,6 +31,12 @@ public class HomePage extends BasePage{
     @FindBy(id = "view-savings-menu-item")
     WebElement viewSavingsMenu;
 
+    @FindBy(id = "new-savings-menu-item")
+    WebElement createSavingMenu;
+
+    @FindBy(id = "transfer-menu-item")
+    WebElement transferMenu;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -44,14 +53,36 @@ public class HomePage extends BasePage{
 
         logger.trace("deleteDataOption.click");
         deleteDataOption.click();
+
+        assertEquals("Dashboard", pageTitle.getText());
+        assertTrue(driver.getCurrentUrl().contains("/bank/home"));
     }
 
-    public void gotoViewSavings(){
+    public ViewSavingsPage gotoViewSavings(){
         logger.trace("savingMenu.click");
         savingMenu.click();
 
         logger.trace("viewSavingsMenu.click");
         viewSavingsMenu.click();
+
+        return new ViewSavingsPage(driver);
+    }
+
+    public CreateSavingsPage gotoCreateSavings(){
+        logger.trace("savingMenu.click");
+        savingMenu.click();
+
+        logger.trace("createSavingMenu.click");
+        createSavingMenu.click();
+
+        return new CreateSavingsPage(driver);
+    }
+
+    public TransferPage gotoTransferPage(){
+        logger.trace("transferMenu.click");
+        transferMenu.click();
+
+        return new TransferPage(driver);
     }
 
 }

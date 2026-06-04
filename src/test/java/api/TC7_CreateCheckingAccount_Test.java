@@ -3,6 +3,9 @@ package api;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.equalTo;
@@ -42,23 +45,33 @@ public class TC7_CreateCheckingAccount_Test extends BaseAPI_Test {
 
         response2.then()
                 .statusCode(200)
+                .body("username", equalTo(username))
                 .log().all();
 
-        String id = response2.jsonPath().get("id").toString();
+        int id = response2.jsonPath().get("id");
         System.out.println(id);
 
+        //int userId = findResponse.path("id");
+
         //3. Checking account létrehozása -> POST /api/v1/user/{id}/account
+
+        //Map<String, Object> accountRequest = new HashMap<>();
+        //accountRequest.put("accountName", "API-Checking");
+        //accountRequest.put("accountTypeCode", "SCK");
+        //accountRequest.put("openingDeposit", 999);
+        //accountRequest.put("ownerTypeCode", "IND");
+
         Response response3 = given()
                 .contentType(JSON)
                 .header(AUTH_HEADER, "Bearer " + authToken)
                 .body("""
-                {
-                  "accountName": "API-Checking",
-                  "accountTypeCode": "SCK",
-                  "openingDeposit": 999,
-                  "ownerTypeCode": "IND"
-                }
-                """)
+                        {
+                          "accountName": "API-Checking",
+                          "accountTypeCode": "SCK",
+                          "openingDeposit": 999,
+                          "ownerTypeCode": "IND"
+                        }
+                        """)
 
                 .when()
                 .post("/api/v1/user/" + id + "/account");

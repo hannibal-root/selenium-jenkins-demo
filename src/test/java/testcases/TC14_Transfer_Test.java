@@ -1,6 +1,5 @@
 package testcases;
 
-import io.qameta.allure.Description;
 import org.apache.logging.log4j.LogManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -8,26 +7,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import pages.CreateSavingsPage;
-import pages.HomePage;
-import pages.LoginPage;
-import pages.ViewSavingsPage;
+import pages.*;
 
-public class TC12_NoAccount_Test extends BaseTest{
+public class TC14_Transfer_Test extends BaseTest{
     static {
-        logger = LogManager.getLogger(TC12_NoAccount_Test.class);
+        logger = LogManager.getLogger(TC14_Transfer_Test.class);
     }
 
     @Test
-    @DisplayName("TC12_NoAccount_Test")
-    @Description("TC12 leírás")
-    @Tag("TC12")
-    public void TC12_NoAccounttest(TestInfo testInfo) {
+    @DisplayName("TC14_Transfer_Test")
+    @Tag("TC14")
+    public void TC14_Transfertest(TestInfo testInfo) {
         logger.info(testInfo + " started");
 
         LoginPage loginPage = new LoginPage(driver);
 
-        logger.info("Cookie popup megjelenése és elfogadása");
+        logger.info("Cookie popup elfogadása");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.freeprivacypolicy-com---nb-interstitial-overlay")))
                 .isDisplayed();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='cc-nb-okagree']")))
@@ -42,14 +37,18 @@ public class TC12_NoAccount_Test extends BaseTest{
         HomePage homePage = loginPage.login(username, password);
         homePage.isLoaded();
 
-        logger.info("Account adatok törlése");
-        homePage.deleteData();
+        logger.info("Navigálás a TransferPage-re");
+        TransferPage transferPage = homePage.gotoTransferPage();
+        transferPage.isLoaded();
 
-        logger.info("Navigálás a ViewSavingPage-re és a No account popup ellenőrzése");
-        ViewSavingsPage viewSavingsPage = homePage.gotoViewSavings();
-        viewSavingsPage.checkingNoAccountsPopup();
+        logger.info("Transfer létrehozása");
+        String accountName1 = "SAV1";
+        String accountName2 = "SAV2";
+        String amount = "500";
 
-        CreateSavingsPage createSavingsPage = viewSavingsPage.clickContinueButton();
-        createSavingsPage.isLoaded();
+        ViewSavingsPage viewSavingsPage = transferPage.createTransfer(accountName1, accountName2, amount);
+        viewSavingsPage.amountCheck(amount);
+
+        //A tranzakció sikeres végrehajtásáról visszajelzés jelenik meg. -> Nem jelent meg!
     }
 }
